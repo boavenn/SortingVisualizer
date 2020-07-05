@@ -1,8 +1,8 @@
 import React from 'react';
 
-const ShuffleButton = ({ shuffle }) => {
+const ShuffleButton = ({ shuffle, isSorting }) => {
     return (
-        <button onClick={shuffle}>
+        <button onClick={shuffle} disabled={isSorting}>
             Shuffle
         </button>
     )

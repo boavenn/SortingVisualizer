@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-const SizeSlider = ({ numOfBars, updateSize }) => {
+const SizeSlider = ({ numOfBars, updateSize, isSorting }) => {
     const input = useRef();
 
     const handleChange = e => {
@@ -20,6 +20,7 @@ const SizeSlider = ({ numOfBars, updateSize }) => {
                 max='300'
                 step='10'
                 onChange={handleChange}
+                disabled={isSorting}
             />
             <div>
                 {numOfBars}
