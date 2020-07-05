@@ -27,7 +27,7 @@ const partition = async (arr, begin, end, delayRef, isSortingRef, setBars) => {
     arr = [...arr];
 
     let pivot = arr[end].value;
-    arr[r].color = 'red';
+    arr[end].color = 'red';
     let i = begin - 1;
     for (let j = begin; j < end; j++) {
         if (arr[j].value <= pivot) {
@@ -48,7 +48,7 @@ const partition = async (arr, begin, end, delayRef, isSortingRef, setBars) => {
     }
 
     swapValues(arr, i + 1, end);
-    arr[r].color = 'whitesmoke';
+    arr[end].color = 'whitesmoke';
 
     setBars(arr);
     arr = [...arr];

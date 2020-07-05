@@ -9,8 +9,8 @@ const SizeSlider = ({ numOfBars, updateSize, isSorting }) => {
     }
 
     return (
-        <div>
-            <div>
+        <div style={{ display: 'flex' }}>
+            <div style={{ color: 'whitesmoke' }}>
                 Array size
             </div>
             <input ref={input}
@@ -21,8 +21,9 @@ const SizeSlider = ({ numOfBars, updateSize, isSorting }) => {
                 step='10'
                 onChange={handleChange}
                 disabled={isSorting}
+                style={{ marginLeft: "20px" }}
             />
-            <div>
+            <div style={{ color: 'whitesmoke', marginLeft: "10px" }}>
                 {numOfBars}
             </div>
         </div>

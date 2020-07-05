@@ -9,8 +9,8 @@ const DelaySlider = ({ delay, setDelay }) => {
     }
 
     return (
-        <div>
-            <div>
+        <div style={{ display: 'flex' }}>
+            <div style={{ color: 'whitesmoke' }}>
                 Delay
             </div>
             <input ref={input}
@@ -20,8 +20,9 @@ const DelaySlider = ({ delay, setDelay }) => {
                 max='100'
                 step='5'
                 onChange={handleChange}
+                style={{ marginLeft: "20px" }}
             />
-            <div>
+            <div style={{ color: 'whitesmoke', marginLeft: "10px" }}>
                 {delay}
             </div>
         </div>

@@ -15,10 +15,10 @@ const config = merge(common, {
     optimization: {
         minimizer: [
             new OptimizeCssAssetsPlugin(),
-             new TerserPlugin({
-                 parallel: true,
-                 extractComments: false
-             })
+            new TerserPlugin({
+                parallel: true,
+                extractComments: false
+            })
         ]
     },
     module: {
@@ -28,6 +28,14 @@ const config = merge(common, {
                 use: [
                     MiniCssExtractPlugin.loader,
                     "css-loader"
+                ]
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    "css-loader",
+                    "sass-loader"
                 ]
             }
         ]

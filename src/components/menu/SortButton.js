@@ -3,13 +3,13 @@ import React from 'react';
 const SortButton = ({ isSorting, setIsSorting }) => {
     if (isSorting) {
         return (
-            <button onClick={() => setIsSorting(false)}>
+            <button className='button is-danger' onClick={() => setIsSorting(false)}>
                 Stop
             </button>
         )
     } else {
         return (
-            <button onClick={() => setIsSorting(true)}>
+            <button className='button is-success' onClick={() => setIsSorting(true)}>
                 Sort
             </button>
         )

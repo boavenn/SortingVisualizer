@@ -7,9 +7,10 @@ const BarRow = ({ bars }) => {
         <div id='bar-row'>
             {bars.map(bar => (
                 <Bar key={bar.id} color={bar.color} width={barWidth}
-                    height={bar.value / bars.length * (window.innerHeight - 50)}
+                    height={bar.value / bars.length * (window.innerHeight * 0.85)}
                 />
             ))}
+            <div style={{ height: window.innerHeight * 0.85, width: "1px" }}></div>
         </div>
     )
 }

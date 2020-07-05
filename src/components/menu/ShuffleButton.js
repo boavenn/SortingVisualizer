@@ -2,7 +2,7 @@ import React from 'react';
 
 const ShuffleButton = ({ shuffle, isSorting }) => {
     return (
-        <button onClick={shuffle} disabled={isSorting}>
+        <button className='button is-info' onClick={shuffle} disabled={isSorting}>
             Shuffle
         </button>
     )

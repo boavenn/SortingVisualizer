@@ -103,11 +103,36 @@ const App = () => {
 
     return (
         <>
-            <SortSelect sortNames={sortNames} chosenSort={chosenSort} setChosenSort={setChosenSort} />
-            <ShuffleButton shuffle={shuffle} isSorting={isSorting} />
-            <SortButton isSorting={isSorting} setIsSorting={setIsSorting} />
-            <SizeSlider numOfBars={numOfBars} updateSize={size => updateSize(size)} isSorting={isSorting} />
-            <DelaySlider delay={delay} setDelay={setDelay} isSorting={isSorting} />
+            <div id='menu' className='navbar'>
+                <div className='navbar-menu'>
+                    <div className='navbar-start' style={{ marginLeft: "70px" }}>
+                        <div className='navbar-item'>
+                            <SizeSlider numOfBars={numOfBars} updateSize={size => updateSize(size)} isSorting={isSorting} />
+                        </div>
+                        <div style={{
+                            width: "1px",
+                            height: "80%",
+                            background: "whitesmoke",
+                            margin: "5px"
+                        }}
+                        ></div>
+                        <div className='navbar-item'>
+                            <DelaySlider delay={delay} setDelay={setDelay} isSorting={isSorting} />
+                        </div>
+                    </div>
+                    <div className='navbar-end' style={{ marginRight: "70px" }}>
+                        <div className='navbar-item' style={{ marginRight: "10px" }}>
+                            <SortSelect sortNames={sortNames} chosenSort={chosenSort} setChosenSort={setChosenSort} />
+                        </div>
+                        <div className='navbar-item' style={{ marginRight: "10px" }}>
+                            <ShuffleButton shuffle={shuffle} isSorting={isSorting} />
+                        </div>
+                        <div className='navbar-item'>
+                            <SortButton isSorting={isSorting} setIsSorting={setIsSorting} />
+                        </div>
+                    </div>
+                </div>
+            </div>
             <BarRow bars={bars} />
         </>
     )
