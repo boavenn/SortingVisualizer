@@ -1,12 +1,19 @@
-export const heapSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting }) => {
+import { swapValues, wait } from './util';
+
+export const heapSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting, restoreColor }) => {
     let arr = [...bars];
     await buildMaxHeap(arr, arr.length, delayRef, isSortingRef, setBars);
     for (let i = arr.length - 1; i >= 1; i--) {
-        [arr[0].value, arr[i].value] = [arr[i].value, arr[0].value];
+        swapValues(arr, i, 0);
+        arr[i].color = 'red';
+        arr[0].color = 'red';
 
-        await new Promise(r => setTimeout(r, delayRef.current));
+        await wait(delayRef.current);
         setBars(arr);
         arr = [...arr];
+
+        arr[i].color = 'whitesmoke';
+        arr[0].color = 'whitesmoke';
 
         await heapifyMax(arr, i, 0, delayRef, isSortingRef, setBars);
         if (!isSortingRef.current) {
@@ -14,7 +21,7 @@ export const heapSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSor
         }
     }
 
-    setBars(arr);
+    restoreColor();
 
     setIsSorting(false);
 }
@@ -45,11 +52,16 @@ const heapifyMax = async (arr, size, i, delayRef, isSortingRef, setBars) => {
         largest = r;
     }
     if (largest !== i) {
-        [arr[i].value, arr[largest].value] = [arr[largest].value, arr[i].value];
+        swapValues(arr, i, largest);
+        arr[largest].color = 'limegreen';
+        arr[i].color = 'limegreen';
 
-        await new Promise(r => setTimeout(r, delayRef.current));
+        await wait(delayRef.current);
         setBars(arr);
         arr = [...arr];
+
+        arr[largest].color = 'whitesmoke';
+        arr[i].color = 'whitesmoke';
 
         await heapifyMax(arr, size, largest, delayRef, isSortingRef, setBars)
     }

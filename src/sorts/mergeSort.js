@@ -1,11 +1,17 @@
-export const mergeSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting }) => {
+import { wait } from './util';
+
+export const mergeSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting, restoreColor }) => {
     let arr = [...bars];
     await mergeSortRec(arr, 0, arr.length - 1, delayRef, isSortingRef, setBars);
-    setBars(arr);
+    restoreColor();
     setIsSorting(false);
 }
 
 const mergeSortRec = async (arr, begin, end, delayRef, isSortingRef, setBars) => {
+    if (!isSortingRef.current) {
+        return;
+    }
+
     if (begin < end) {
         let mid = begin + Math.floor((end - begin) / 2);
         await mergeSortRec(arr, begin, mid, delayRef, isSortingRef, setBars);
@@ -15,6 +21,10 @@ const mergeSortRec = async (arr, begin, end, delayRef, isSortingRef, setBars) =>
 }
 
 const merge = async (arr, begin, mid, end, delayRef, isSortingRef, setBars) => {
+    if (!isSortingRef.current) {
+        return;
+    }
+
     let len1 = mid - begin + 1;
     let len2 = end - mid;
     let L = new Array(len1);
@@ -30,19 +40,17 @@ const merge = async (arr, begin, mid, end, delayRef, isSortingRef, setBars) => {
     let j = 0;
     let k = begin;
     while (i < len1 && j < len2) {
+        arr[k].color = 'red';
         arr[k++].value = (L[i] <= R[j]) ? L[i++] : R[j++];
 
-        await new Promise(r => setTimeout(r, delayRef.current));
+        await wait(delayRef.current);
         setBars(arr);
         arr = [...arr];
 
+        arr[k - 1].color = 'whitesmoke';
         if (!isSortingRef.current) {
-            break;
+            return;
         }
-    }
-
-    if (!isSortingRef.current) {
-        return;
     }
 
     while (i < len1) {

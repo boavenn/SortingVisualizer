@@ -1,4 +1,6 @@
-export const insertionSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting }) => {
+import { swapColors, wait } from './util';
+
+export const insertionSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting, restoreColor }) => {
     let arr = [...bars];
     for (let i = 1; i < arr.length; i++) {
         let j = i - 1;
@@ -8,11 +10,13 @@ export const insertionSort = async ({ bars, delayRef, isSortingRef, setBars, set
             return;
         }
 
+        arr[j + 1].color = 'red';
         while (j >= 0 && arr[j].value > key) {
             arr[j + 1].value = arr[j].value;
+            swapColors(arr, j, j + 1);
             j--;
 
-            await new Promise(r => setTimeout(r, delayRef.current));
+            await wait(delayRef.current);
             setBars(arr);
             arr = [...arr];
 
@@ -21,7 +25,8 @@ export const insertionSort = async ({ bars, delayRef, isSortingRef, setBars, set
             }
         }
         arr[j + 1].value = key;
-        setBars(arr);
+        arr[j + 1].color = 'whitesmoke';
+        restoreColor();
     }
     setIsSorting(false);
 }

@@ -1,4 +1,6 @@
-export const radixSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting }) => {
+import { wait } from './util';
+
+export const radixSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting, restoreColor }) => {
     let arr = [...bars];
     let m = arr.length;
     for (let exp = 1; Math.floor(m / exp) > 0; exp *= 10) {
@@ -8,7 +10,7 @@ export const radixSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSo
         await countingSort(arr, exp, delayRef, isSortingRef, setBars);
     }
 
-    setBars(arr);
+    restoreColor();
     setIsSorting(false);
 }
 
@@ -38,9 +40,12 @@ const countingSort = async (arr, exp, delayRef, isSortingRef, setBars) => {
         }
 
         arr[i].value = B[i];
+        arr[i].color = 'red';
 
-        await new Promise(r => setInterval(r, delayRef.current));
+        await wait(delayRef.current);
         setBars(arr);
         arr = [...arr];
+
+        arr[i].color = 'whitesmoke';
     }
 }

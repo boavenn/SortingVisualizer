@@ -1,4 +1,6 @@
-export const shellSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting }) => {
+import { wait } from './util';
+
+export const shellSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting, restoreColor }) => {
     let arr = [...bars];
     for (let step = Math.floor(arr.length / 2); step > 0; step = Math.floor(step / 2)) {
         for (let i = step; i < arr.length; i++) {
@@ -14,8 +16,15 @@ export const shellSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSo
                     break;
                 }
                 arr[j].value = arr[j - step].value;
+                arr[j].color = 'red';
 
-                await new Promise(r => setInterval(r, delayRef.current));
+                await wait(delayRef.current);
+                setBars(arr);
+                arr = [...arr];
+
+                arr[j].color = 'whitesmoke';
+
+                await wait(delayRef.current);
                 setBars(arr);
                 arr = [...arr];
             }
@@ -24,10 +33,11 @@ export const shellSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSo
             }
             arr[j].value = key;
 
-            await new Promise(r => setInterval(r, delayRef.current));
+            await wait(delayRef.current);
             setBars(arr);
             arr = [...arr];
         }
     }
+    restoreColor();
     setIsSorting(false);
 }

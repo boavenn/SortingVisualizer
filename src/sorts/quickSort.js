@@ -1,7 +1,9 @@
-export const quickSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting }) => {
+import { swapValues, wait } from './util';
+
+export const quickSort = async ({ bars, delayRef, isSortingRef, setBars, setIsSorting, restoreColor }) => {
     let arr = [...bars];
     await quickSortRec(arr, 0, arr.length - 1, delayRef, isSortingRef, setBars);
-    setBars(arr);
+    restoreColor();
     setIsSorting(false);
 }
 
@@ -14,20 +16,24 @@ const quickSortRec = async (arr, begin, end, delayRef, isSortingRef, setBars) =>
 }
 
 const partition = async (arr, begin, end, delayRef, isSortingRef, setBars) => {
+    if (!isSortingRef.current) {
+        return;
+    }
+
     let r = Math.floor(Math.random() * (end - begin) + begin);
-    [arr[r].value, arr[end].value] = [arr[end].value, arr[r].value];
+    swapValues(arr, r, end);
 
     setBars(arr);
     arr = [...arr];
 
     let pivot = arr[end].value;
+    arr[r].color = 'red';
     let i = begin - 1;
     for (let j = begin; j < end; j++) {
         if (arr[j].value <= pivot) {
             i++;
-            [arr[i].value, arr[j].value] = [arr[j].value, arr[i].value];
-
-            await new Promise(r => setInterval(r, delayRef.current));
+            swapValues(arr, i, j);
+            await wait(delayRef.current);
             setBars(arr);
             arr = [...arr];
         }
@@ -41,7 +47,8 @@ const partition = async (arr, begin, end, delayRef, isSortingRef, setBars) => {
         return;
     }
 
-    [arr[i + 1].value, arr[end].value] = [arr[end].value, arr[i + 1].value];
+    swapValues(arr, i + 1, end);
+    arr[r].color = 'whitesmoke';
 
     setBars(arr);
     arr = [...arr];

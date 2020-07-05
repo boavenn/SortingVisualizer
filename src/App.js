@@ -66,21 +66,17 @@ const App = () => {
     const isSortingRef = initRef(isSorting);
     const delayRef = initRef(delay);
 
-    const sortProps = {
-        bars,
-        delayRef,
-        isSortingRef,
-        setBars,
-        setIsSorting
-    }
-
     const shuffle = () => {
-        let temp = [...bars];
+        let temp = initBars(numOfBars);
         for (let i = bars.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [temp[i], temp[j]] = [temp[j], temp[i]];
         }
         setBars(temp);
+    }
+
+    const restoreColor = () => {
+        setBars(bars.map(bar => ({ ...bar, color: 'whitesmoke' })));
     }
 
     const updateSize = size => {
@@ -95,6 +91,15 @@ const App = () => {
             sorts[chosenSort](sortProps);
         }
     }, [isSorting]);
+
+    const sortProps = {
+        bars,
+        delayRef,
+        isSortingRef,
+        setBars,
+        setIsSorting,
+        restoreColor
+    }
 
     return (
         <>
