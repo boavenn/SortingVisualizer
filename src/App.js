@@ -14,11 +14,24 @@ import { mergeSort } from './sorts/mergeSort';
 import { quickSort } from './sorts/quickSort';
 import { radixSort } from './sorts/radixSort';
 
-const initBars = size => {
+const createBars = size => {
     let bars = new Array(size);
     for (let i = 0; i < size; i++) {
         bars[i] = { id: i + 1, value: i + 1, color: 'whitesmoke' };
     }
+    return bars;
+}
+
+const shuffleArray = arr => {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+}
+
+const initBars = size => {
+    let bars = createBars(size);
+    shuffleArray(bars);
     return bars;
 }
 
@@ -48,12 +61,6 @@ const initSortNames = () => {
     return sortNames;
 }
 
-const initRef = value => {
-    const ref = useRef();
-    ref.current = value;
-    return ref;
-}
-
 const App = () => {
     const [numOfBars, setNumOfBars] = useState(100);
     const [bars, setBars] = useState(initBars(numOfBars));
@@ -63,16 +70,12 @@ const App = () => {
     const [sorts] = useState(initSorts());
     const [sortNames] = useState(initSortNames);
 
-    const isSortingRef = initRef(isSorting);
-    const delayRef = initRef(delay);
+    const isSortingRef = useRef(isSorting);
+    const delayRef = useRef(delay);
+    const initialRender = useRef(true);
 
     const shuffle = () => {
-        let temp = initBars(numOfBars);
-        for (let i = bars.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [temp[i], temp[j]] = [temp[j], temp[i]];
-        }
-        setBars(temp);
+        setBars(initBars(numOfBars));
     }
 
     const restoreColor = () => {
@@ -80,17 +83,27 @@ const App = () => {
     }
 
     const updateSize = size => {
-        setBars(initBars(size));
         setNumOfBars(size);
     }
 
-    useEffect(() => shuffle(), [numOfBars]);
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false;
+        } else {
+            shuffle();
+        }
+    }, [numOfBars]);
 
     useEffect(() => {
+        isSortingRef.current = isSorting;
         if (isSorting) {
             sorts[chosenSort](sortProps);
         }
     }, [isSorting]);
+
+    useEffect(() => {
+        delayRef.current = delay;
+    }, [delay])
 
     const sortProps = {
         bars,
